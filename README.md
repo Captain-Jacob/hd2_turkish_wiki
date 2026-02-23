@@ -12,6 +12,9 @@ GEREKENLER
 
 --------------------------------------------------
 
+Remove-Item -Recurse -Force .next
+npm run dev
+//kalsın şurada
 PROJEYİ ÇALIŞTIRMA 
 
 Projeyi klonladıktan sonra klasöre girip:
@@ -44,5 +47,7 @@ content/weapons/yeni-silah.md
 
 Bu dosya otomatik olarak şu adreste görünür:
 /weapons/yeni-silah
+
+
 
 --------------------------------------------------

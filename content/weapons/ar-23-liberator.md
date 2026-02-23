@@ -1,12 +1,17 @@
 ---
 title: "AR-23 Liberator"
-summary: "Standart tüfek. Dengeli recoil + orta menzil."
-tags: ["assault-rifle", "beginner"]
-updated: "2026-02-23"
+summary: "Zırh delici mühimmat kullanan assault rifle. Orta zırhlı hedeflere karşı etkili."
+image: "https://helldivers.wiki.gg/images/AR-23_Liberator_Primary_Render.png"
+tags: ["Assault Rifle", "Primary", "Medium Penetration"]
+
+stats:
+  damage: 90
+  fire_rate: 640
+  recoil: 14
+  ergo: 65
+  capacity: 45
+  reload: 2.4
+  penetration: Light
 ---
 
-## Genel
-Liberator çoğu görevde “her işe gider” bir başlangıç silahıdır.
-
-## Öneri
-Stratagem: `Eagle Airstrike`
+updatenelecek

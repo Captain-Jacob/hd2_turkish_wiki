@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+export const listDocsWithStats = listDocsFull;
 
 export type Category = "weapons" | "enemies" | "stratagems" | "builds";
 
@@ -18,6 +19,8 @@ export type DocFrontmatter = {
   summary?: string;
   tags?: string[];
   updated?: string;
+  image?: string;
+  stats?: WeaponStats; // bazı kategorilerde olmayabilir, sorun değil
 };
 
 export type DocIndexItem = {
@@ -27,6 +30,28 @@ export type DocIndexItem = {
   summary?: string;
   tags: string[];
   updated?: string;
+  image?: string; // ✅ liste kartlarında göstermek için
+};
+
+export type WeaponStats = {
+  fire_rate?: number;
+  recoil?: number;
+  ergo?: number;
+  capacity?: number;
+  reload?: number;
+  damage?: number;
+  penetration?: string; // Light/Medium vs
+};
+
+export type DocItem = {
+  category: Category;
+  slug: string;
+  title: string;
+  summary?: string;
+  tags: string[];
+  updated?: string;
+  image?: string;
+  stats?: WeaponStats;
 };
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -39,6 +64,26 @@ function safeReadDir(dir: string): string[] {
   }
 }
 
+/** content içinden ilk görsel URL'sini yakala: <img src="..."> veya ![](...) */
+function extractFirstImageUrl(markdownOrHtml: string): string | undefined {
+  // HTML: <img src="...">
+  const htmlImg = markdownOrHtml.match(/<img[^>]*\s+src=["']([^"']+)["'][^>]*>/i);
+  const url1 = htmlImg?.[1];
+
+  // Markdown: ![alt](url)
+  const mdImg = markdownOrHtml.match(/!\[[^\]]*\]\(([^)]+)\)/);
+  const url2 = mdImg?.[1];
+
+  const url = (url1 || url2)?.trim();
+  if (!url) return undefined;
+
+  // sadece http(s)
+  if (!/^https?:\/\//i.test(url)) return undefined;
+
+  return url;
+}
+
+/** Basit index listesi (image dahil) */
 export function listDocs(category?: Category): DocIndexItem[] {
   const cats = category ? [category] : (CATEGORIES.map((c) => c.key) as Category[]);
   const items: DocIndexItem[] = [];
@@ -50,7 +95,9 @@ export function listDocs(category?: Category): DocIndexItem[] {
     for (const file of files) {
       const slug = file.replace(/\.md$/, "");
       const raw = fs.readFileSync(path.join(catDir, file), "utf8");
-      const { data } = matter(raw);
+      const { data, content } = matter(raw);
+
+      const extractedImage = extractFirstImageUrl(content);
       const fm = data as Partial<DocFrontmatter>;
 
       items.push({
@@ -60,6 +107,7 @@ export function listDocs(category?: Category): DocIndexItem[] {
         summary: fm.summary,
         tags: Array.isArray(fm.tags) ? fm.tags : [],
         updated: fm.updated,
+        image: fm.image ?? extractedImage,
       });
     }
   }
@@ -74,15 +122,45 @@ export function listDocs(category?: Category): DocIndexItem[] {
   return items;
 }
 
+/** Compare / grid için full liste (stats + image fallback içerikten) */
+export function listDocsFull(category?: Category): DocItem[] {
+  const cats = category ? [category] : (CATEGORIES.map((c) => c.key) as Category[]);
+  const items: DocItem[] = [];
+
+  for (const cat of cats) {
+    const catDir = path.join(CONTENT_DIR, cat);
+    const files = safeReadDir(catDir).filter((f) => f.endsWith(".md"));
+
+    for (const file of files) {
+      const slug = file.replace(/\.md$/, "");
+      const raw = fs.readFileSync(path.join(catDir, file), "utf8");
+      const { data, content } = matter(raw);
+
+      const extractedImage = extractFirstImageUrl(content);
+
+      items.push({
+        category: cat,
+        slug,
+        title: (data.title ?? slug) as string,
+        summary: (data.summary ?? "") as string,
+        tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
+        image: (data.image ?? extractedImage ?? undefined) as string | undefined,
+        stats: (data.stats ?? undefined) as WeaponStats | undefined,
+        updated: (data.updated ?? undefined) as string | undefined,
+      });
+    }
+  }
+
+  return items;
+}
+
 export async function getDoc(category: Category, slug: string) {
-  // ✅ Build sırasında undefined gelirse direkt net hata verir
   if (!category || !slug) {
     throw new Error(`getDoc() missing params -> category="${String(category)}" slug="${String(slug)}"`);
   }
 
   const fullPath = path.join(CONTENT_DIR, category, `${slug}.md`);
 
-  // ✅ Dosya yolu yanlışsa net söyler
   if (!fs.existsSync(fullPath)) {
     throw new Error(`Missing content file: ${fullPath}`);
   }
@@ -90,11 +168,18 @@ export async function getDoc(category: Category, slug: string) {
   const raw = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(raw);
 
+  const extractedImage = extractFirstImageUrl(content);
+
   const processed = await remark().use(html).process(content);
   const contentHtml = processed.toString();
 
+  const fm = data as DocFrontmatter;
+
   return {
-    frontmatter: data as DocFrontmatter,
+    frontmatter: {
+      ...fm,
+      image: fm.image ?? extractedImage, // ✅ detay sayfada da görsel garanti
+    } as DocFrontmatter,
     contentHtml,
   };
 }

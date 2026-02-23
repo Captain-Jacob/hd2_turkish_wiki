@@ -1,52 +1,59 @@
+// app/components/SearchBox.tsx
 "use client";
 
 import { useMemo, useState } from "react";
-import type { DocIndexItem } from "@/lib/content";
 
-export default function SearchBox({ items }: { items: DocIndexItem[] }) {
+type Item = {
+  category: string;
+  slug: string;
+  title: string;
+  summary?: string;
+  tags: string[];
+};
+
+export default function SearchBox({ items }: { items: Item[] }) {
   const [q, setQ] = useState("");
 
-  const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    if (!s) return items.slice(0, 12);
+  const results = useMemo(() => {
+    const query = q.trim().toLowerCase();
+    if (!query) return items;
 
-    return items
-      .filter((it) => {
-        const hay = `${it.title} ${it.summary ?? ""} ${it.tags.join(" ")}`.toLowerCase();
-        return hay.includes(s);
-      })
-      .slice(0, 18);
+    return items.filter((it) => {
+      const hay =
+        `${it.title} ${it.summary ?? ""} ${it.tags?.join(" ") ?? ""} ${it.slug} ${it.category}`.toLowerCase();
+      return hay.includes(query);
+    });
   }, [q, items]);
 
   return (
-    <div className="card" style={{ marginTop: 12 }}>
+    <div className="card" style={{ padding: 14 }}>
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Ara: Liberator, Charger, Eagle Airstrike…"
+        placeholder="Ara: Liberator, Charger, Eagle Airstrike..."
         style={{
           width: "100%",
-          padding: "10px 12px",
+          padding: "12px 14px",
           borderRadius: 12,
-          border: "1px solid var(--border)",
-          background: "rgba(255,255,255,0.04)",
-          color: "var(--text)",
+          border: "1px solid rgba(255,255,255,.10)",
+          background: "rgba(255,255,255,.04)",
+          color: "inherit",
           outline: "none",
         }}
       />
 
-      <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
-        {filtered.map((it) => (
+      <div style={{ marginTop: 12, display: "grid", gap: 10 }}>
+        {results.map((it) => (
           <a
             key={`${it.category}/${it.slug}`}
-            href={`/${it.category}/${it.slug}`}
             className="card"
-            style={{ padding: "10px 12px" }}
+            href={`/${it.category}/${it.slug}`} // ✅ undefined fix
+            style={{ display: "block", padding: 14, textDecoration: "none" }}
           >
-            <div style={{ fontWeight: 700 }}>{it.title}</div>
-            <div style={{ color: "var(--muted)", fontSize: 13 }}>
-              {it.summary ?? `${it.category} / ${it.slug}`}
-            </div>
+            <div style={{ fontWeight: 900 }}>{it.title}</div>
+            {it.summary ? (
+              <div style={{ color: "var(--muted)", marginTop: 4 }}>{it.summary}</div>
+            ) : null}
           </a>
         ))}
       </div>
