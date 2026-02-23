@@ -1,66 +1,31 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { listDocs, CATEGORIES } from "@/lib/content";
+import SearchBox from "./components/SearchBox";
+import HomeVideo from "./components/HomeVideo";
 
-export default function Home() {
+export default function HomePage() {
+  const items = listDocs();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div style={{ display: "grid", gap: 14 }}>
+      <h1 style={{ margin: 0, fontSize: 34 }}>Helldivers 2 Türkçe Wiki</h1>
+      <div style={{ color: "var(--muted)" }}>
+        Silahlar, düşmanlar, stratagemler ve build önerileri. İçerik eklemek için <code>content/</code> klasörüne .md at.
+      </div>
+
+      <SearchBox items={items} />
+
+      <div style={{ display: "grid", gap: 10, marginTop: 10 }}>
+        <h2 style={{ margin: "10px 0 0", fontSize: 18 }}>Kategoriler</h2>
+        <div style={{ display: "grid", gap: 10 }}>
+          {CATEGORIES.map((c) => (
+            <a key={c.key} className="card" href={`/${c.key}`}>
+              <div style={{ fontWeight: 800 }}>{c.label}</div>
+              <div style={{ color: "var(--muted)", fontSize: 13 }}>İçeriği listele</div>
+            </a>
+          ))}
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
+      <HomeVideo />
     </div>
   );
 }
