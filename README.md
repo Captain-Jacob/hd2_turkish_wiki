@@ -8,12 +8,12 @@ Bu repo Next.js + Vercel ile çalışır. /vercel şuan yok
 
 - Node.js 
 - npm
-- 
+
 ---
 
 ### 2️⃣ Projeyi çalıştır (development)
 ```bash
 npm install
 npm run dev
-
+```
 sonra http://localhost:3000 dan girin
