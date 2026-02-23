@@ -7,11 +7,11 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ fontWeight: 900, fontSize: 16 }}>HD2 Türkçe Wiki</div>
-        <span className="kbd">Vercel</span>
+        
       </div>
 
       <div style={{ marginTop: 14, color: "var(--muted)", fontSize: 13 }}>
-        İçerikler <b>content/</b> klasöründen geliyor.
+        oyeeee torunum
       </div>
 
       <nav style={{ marginTop: 18, display: "grid", gap: 10 }}>
@@ -36,9 +36,7 @@ export default function Sidebar() {
       </nav>
 
       <div style={{ marginTop: 18, color: "var(--muted)", fontSize: 12 }}>
-        Yeni sayfa eklemek:
-        <br />
-        <code>content/weapons/yeni-silah.md</code>
+        
       </div>
     </aside>
   );

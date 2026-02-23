@@ -75,7 +75,18 @@ export function listDocs(category?: Category): DocIndexItem[] {
 }
 
 export async function getDoc(category: Category, slug: string) {
+  // ✅ Build sırasında undefined gelirse direkt net hata verir
+  if (!category || !slug) {
+    throw new Error(`getDoc() missing params -> category="${String(category)}" slug="${String(slug)}"`);
+  }
+
   const fullPath = path.join(CONTENT_DIR, category, `${slug}.md`);
+
+  // ✅ Dosya yolu yanlışsa net söyler
+  if (!fs.existsSync(fullPath)) {
+    throw new Error(`Missing content file: ${fullPath}`);
+  }
+
   const raw = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(raw);
 
