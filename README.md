@@ -1,4 +1,4 @@
-HELldivers 2 TÜRKÇE WIKI
+Helldivers 2 TÜRKÇE WIKI
 
 
 Helldivers 2 için hazırlanmış basit, hızlı ve genişletilebilir bir Türkçe wiki projesidir.
