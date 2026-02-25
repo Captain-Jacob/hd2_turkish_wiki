@@ -6,6 +6,21 @@ import html from "remark-html";
 export const listDocsWithStats = listDocsFull;
 
 export type Category = "weapons" | "enemies" | "stratagems" | "builds";
+export type Penetration = "light" | "medium" | "heavy" | "unknown";
+
+export type WeaponSlot = "primary" | "secondary" | "throwable" | "support";
+export type WeaponType =
+  | "assault_rifle"
+  | "marksman"
+  | "smg"
+  | "shotgun"
+  | "pistol"
+  | "melee"
+  | "grenade"
+  | "utility"
+  | "special";
+
+export type WeaponMeta = { slot?: WeaponSlot; type?: WeaponType };  
 
 export const CATEGORIES: { key: Category; label: string }[] = [
   { key: "weapons", label: "Silahlar" },
@@ -20,7 +35,8 @@ export type DocFrontmatter = {
   tags?: string[];
   updated?: string;
   image?: string;
-  stats?: WeaponStats; // bazı kategorilerde olmayabilir, sorun değil
+  stats?: WeaponStats;
+  weapon?: WeaponMeta;
 };
 
 export type DocIndexItem = {
@@ -30,7 +46,7 @@ export type DocIndexItem = {
   summary?: string;
   tags: string[];
   updated?: string;
-  image?: string; // ✅ liste kartlarında göstermek için
+  image?: string; 
 };
 
 export type WeaponStats = {
@@ -40,7 +56,7 @@ export type WeaponStats = {
   capacity?: number;
   reload?: number;
   damage?: number;
-  penetration?: string; // Light/Medium vs
+  penetration?: Penetration;
 };
 
 export type DocItem = {
@@ -52,6 +68,7 @@ export type DocItem = {
   updated?: string;
   image?: string;
   stats?: WeaponStats;
+  weapon?: WeaponMeta;
 };
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -64,7 +81,7 @@ function safeReadDir(dir: string): string[] {
   }
 }
 
-/** content içinden ilk görsel URL'sini yakala: <img src="..."> veya ![](...) */
+// content içinden ilk görsel URL'sini yakala: <img src="..."> veya ![](...) 
 function extractFirstImageUrl(markdownOrHtml: string): string | undefined {
   // HTML: <img src="...">
   const htmlImg = markdownOrHtml.match(/<img[^>]*\s+src=["']([^"']+)["'][^>]*>/i);
@@ -83,7 +100,7 @@ function extractFirstImageUrl(markdownOrHtml: string): string | undefined {
   return url;
 }
 
-/** Basit index listesi (image dahil) */
+// Basit index listesi (image dahil) 
 export function listDocs(category?: Category): DocIndexItem[] {
   const cats = category ? [category] : (CATEGORIES.map((c) => c.key) as Category[]);
   const items: DocIndexItem[] = [];
@@ -126,7 +143,7 @@ export function listDocs(category?: Category): DocIndexItem[] {
 export function listDocsFull(category?: Category): DocItem[] {
   const cats = category ? [category] : (CATEGORIES.map((c) => c.key) as Category[]);
   const items: DocItem[] = [];
-
+  
   for (const cat of cats) {
     const catDir = path.join(CONTENT_DIR, cat);
     const files = safeReadDir(catDir).filter((f) => f.endsWith(".md"));
@@ -146,6 +163,7 @@ export function listDocsFull(category?: Category): DocItem[] {
         tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
         image: (data.image ?? extractedImage ?? undefined) as string | undefined,
         stats: (data.stats ?? undefined) as WeaponStats | undefined,
+        weapon: (data.weapon ?? undefined) as WeaponMeta | undefined,
         updated: (data.updated ?? undefined) as string | undefined,
       });
     }
@@ -178,7 +196,7 @@ export async function getDoc(category: Category, slug: string) {
   return {
     frontmatter: {
       ...fm,
-      image: fm.image ?? extractedImage, // ✅ detay sayfada da görsel garanti
+      image: fm.image ?? extractedImage, 
     } as DocFrontmatter,
     contentHtml,
   };

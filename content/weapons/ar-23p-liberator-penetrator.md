@@ -64,11 +64,3 @@ Bu silah, **Helldivers Mobilize Warbond** içindeki ilerleme ile açılır.
 - Stratagem desteğiyle ağır hedeflere hazırlanmalı
 
 ---
-
-## VS Notu
-Bu silahı **VS** seçeneği ile:
-- AR-23 Liberator
-- AR-61 Tenderizer
-- AR-32 Pacifier  
-
-gibi diğer assault rifle’larla **hasar, recoil ve penetration** açısından kıyaslayabilirsin.
