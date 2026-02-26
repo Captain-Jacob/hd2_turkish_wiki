@@ -17,4 +17,4 @@ image: "https://helldivers.wiki.gg/images/R-6_Deadeye_Primary_Render.png"
 
 ## Overview
 
-A powerful precision rifle suited to mid- and long-range combat.
+Orta ve uzun menzilli çatışmalar için uygun, güçlü bir hassas tüfek.
