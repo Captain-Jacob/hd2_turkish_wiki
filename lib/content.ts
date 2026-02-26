@@ -81,6 +81,27 @@ function safeReadDir(dir: string): string[] {
   }
 }
 
+// category içindeki tüm .md dosyalarını alt dizinlerle birlikte toplayın
+function collectMarkdownFiles(dir: string, relPath = ""): string[] {
+  try {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const results: string[] = [];
+    for (const ent of entries) {
+      const name = ent.name;
+      const full = path.join(dir, name);
+      const rel = relPath ? path.join(relPath, name) : name;
+      if (ent.isDirectory()) {
+        results.push(...collectMarkdownFiles(full, rel));
+      } else if (ent.isFile() && name.toLowerCase().endsWith(".md")) {
+        results.push(rel);
+      }
+    }
+    return results;
+  } catch {
+    return [];
+  }
+}
+
 // content içinden ilk görsel URL'sini yakala: <img src="..."> veya ![](...) 
 function extractFirstImageUrl(markdownOrHtml: string): string | undefined {
   // HTML: <img src="...">
@@ -107,11 +128,11 @@ export function listDocs(category?: Category): DocIndexItem[] {
 
   for (const cat of cats) {
     const catDir = path.join(CONTENT_DIR, cat);
-    const files = safeReadDir(catDir).filter((f) => f.endsWith(".md"));
+    const files = collectMarkdownFiles(catDir);
 
-    for (const file of files) {
-      const slug = file.replace(/\.md$/, "");
-      const raw = fs.readFileSync(path.join(catDir, file), "utf8");
+    for (const fileRel of files) {
+      const slug = fileRel.replace(/\.md$/, "");
+      const raw = fs.readFileSync(path.join(catDir, fileRel), "utf8");
       const { data, content } = matter(raw);
 
       const extractedImage = extractFirstImageUrl(content);
@@ -146,11 +167,11 @@ export function listDocsFull(category?: Category): DocItem[] {
   
   for (const cat of cats) {
     const catDir = path.join(CONTENT_DIR, cat);
-    const files = safeReadDir(catDir).filter((f) => f.endsWith(".md"));
+    const files = collectMarkdownFiles(catDir);
 
-    for (const file of files) {
-      const slug = file.replace(/\.md$/, "");
-      const raw = fs.readFileSync(path.join(catDir, file), "utf8");
+    for (const fileRel of files) {
+      const slug = fileRel.replace(/\.md$/, "");
+      const raw = fs.readFileSync(path.join(catDir, fileRel), "utf8");
       const { data, content } = matter(raw);
 
       const extractedImage = extractFirstImageUrl(content);

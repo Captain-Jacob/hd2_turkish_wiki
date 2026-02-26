@@ -134,6 +134,7 @@ export default function WeaponGrid({ items }: { items: Item[] }) {
     <div
       style={{
         maxWidth: 1200,
+        width: "100%",
         margin: "0 auto",          // ✅ ortala
         padding: "0 16px",         // ✅ kenar boşluğu
       }}
@@ -150,8 +151,8 @@ export default function WeaponGrid({ items }: { items: Item[] }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 380px",
-          gap: 16,
+          gridTemplateColumns: "1fr 420px",
+          gap: 40,
           alignItems: "start",
         }}
       >
@@ -316,7 +317,7 @@ export default function WeaponGrid({ items }: { items: Item[] }) {
             className="fade-up"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+              gridTemplateColumns: "repeat(4, minmax(240px, 1fr))",
               gap: 12,
             }}
           >
@@ -327,26 +328,28 @@ export default function WeaponGrid({ items }: { items: Item[] }) {
               return (
                 <div
                   key={it.slug}
-                  className="card"
+                  className="card weapon-card"
+                  data-active={active ? "true" : "false"}
                   style={{
                     padding: 12,
                     transition: "transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease",
                     transform: active ? "scale(1.01)" : "scale(1)",
-                    boxShadow: active ? "0 0 0 1px rgba(120,255,255,.25), 0 18px 30px rgba(0,0,0,.35)" : undefined,
-                    borderColor: active ? "rgba(120,255,255,.35)" : undefined,
+                    boxShadow: active ? "0 0 0 1px rgba(255,204,51,.18), 0 18px 30px rgba(0,0,0,.35)" : undefined,
+                    borderColor: active ? "rgba(255,204,51,.25)" : undefined,
                   }}
                 >
                   {/* IMAGE */}
                   <div
+                    className="card-figure"
                     style={{
                       position: "relative",
                       width: "100%",
-                      aspectRatio: "1 / 1",
-                      borderRadius: 14,
+                      aspectRatio: "16 / 9",
+                      borderRadius: 12,
                       overflow: "hidden",
-                      background: "rgba(255,255,255,.04)",
-                      border: "1px solid rgba(255,255,255,.08)",
-                      transition: "border-color .18s ease",
+                      background: "rgba(255,255,255,.02)",
+                      border: "1px solid rgba(255,255,255,.06)",
+                      transition: "border-color .18s ease, transform .18s ease",
                     }}
                   >
                     {img ? (
@@ -407,13 +410,14 @@ export default function WeaponGrid({ items }: { items: Item[] }) {
                   </div>
 
                   {/* TITLE + SUMMARY */}
+                  <div className="card-body">
                   <a
                     href={`/${it.category}/${it.slug}`}
                     style={{ textDecoration: "none", display: "block", marginTop: 10 }}
                   >
-                    <div style={{ fontWeight: 900, fontSize: 15 }}>{it.title}</div>
+                    <div className="card-title">{it.title}</div>
                     {it.summary ? (
-                      <div style={{ color: "var(--muted)", marginTop: 4, fontSize: 13 }}>
+                      <div className="card-summary">
                         {it.summary}
                       </div>
                     ) : null}
@@ -425,19 +429,14 @@ export default function WeaponGrid({ items }: { items: Item[] }) {
                       {it.tags.slice(0, 4).map((t) => (
                         <span
                           key={t}
-                          style={{
-                            fontSize: 12,
-                            padding: "4px 8px",
-                            borderRadius: 999,
-                            border: "1px solid rgba(255,255,255,.12)",
-                            color: "var(--muted)",
-                          }}
+                          className="card-tag"
                         >
                           {t}
                         </span>
                       ))}
                     </div>
                   ) : null}
+                  </div>
                 </div>
               );
             })}
