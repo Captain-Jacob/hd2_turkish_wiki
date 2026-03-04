@@ -5,6 +5,16 @@ import WeaponsGridList from "./WeaponsGridList";
 import WeaponsComparePanel from "./WeaponsComparePanel";
 import { Item } from "./weaponTypes";
 
+//sıralmada yukarıa çıkrma için öncelliklı kelimeler
+const PRIORITY_TAGS = [
+  "Primary",
+  "Secondary",
+  // thorwable sonra eklenecek
+  "Heavy",
+  "Medium",
+  "Light",
+];
+
 export default function WeaponGrid({ items }: { items: Item[] }) {
   const [vs, setVs] = useState<string[]>([]);
 
@@ -81,15 +91,28 @@ export default function WeaponGrid({ items }: { items: Item[] }) {
     });
   }, [items, q, selectedTags, tagMode]);
 
-  const sortedVisibleTags = useMemo(() => {
-    const selectedSet = new Set(selectedTags);
-    return [...visibleTags].sort((a, b) => {
-      const aSel = selectedSet.has(a);
-      const bSel = selectedSet.has(b);
-      if (aSel !== bSel) return aSel ? -1 : 1;
-      return a.localeCompare(b, "tr");
-    });
-  }, [visibleTags, selectedTags]);
+const sortedVisibleTags = useMemo(() => {
+  const selectedSet = new Set(selectedTags);
+
+  // priority index map 
+  const pIndex = new Map<string, number>();
+  PRIORITY_TAGS.forEach((t, i) => pIndex.set(t, i));
+
+  return [...visibleTags].sort((a, b) => {
+    // 1) seçili olanlar üste
+    const aSel = selectedSet.has(a);
+    const bSel = selectedSet.has(b);
+    if (aSel !== bSel) return aSel ? -1 : 1;
+
+    // 2) öncelikli taglar üste 
+    const ai = pIndex.has(a) ? pIndex.get(a)! : Number.POSITIVE_INFINITY;
+    const bi = pIndex.has(b) ? pIndex.get(b)! : Number.POSITIVE_INFINITY;
+    if (ai !== bi) return ai - bi;
+
+    // 3) kalanlar alfabetik
+    return a.localeCompare(b, "tr");
+  });
+}, [visibleTags, selectedTags]);
 
   return (
     <div style={{ maxWidth: 1200, width: "100%", margin: "0 auto", padding: "0 16px" }}>
