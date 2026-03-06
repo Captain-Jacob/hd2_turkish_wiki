@@ -4,7 +4,8 @@ summary: "Cluster fragmentation el bombası. Patlama sonrası küçük bombacık
 tags:
   - Throwable
   - Explosive
-
+  - Medium
+  
 stats:
   damage: 300
   fire_rate: 0

@@ -4,8 +4,7 @@ summary: "Yüksek patlama yarıçapına sahip ağır bir patlayıcı. Uzun fitil
 tags:
   - Throwable
   - Explosive
-  - Heavy Penetration
-  - Demolition
+  - Heavy
 
 stats:
   damage: 1000

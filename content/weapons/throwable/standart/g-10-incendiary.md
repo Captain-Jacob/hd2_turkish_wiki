@@ -5,7 +5,8 @@ tags:
   - Throwable
   - Incendiary
   - Fire
-
+  - Medium
+  
 stats:
   damage: 300
   fire_rate: 0
