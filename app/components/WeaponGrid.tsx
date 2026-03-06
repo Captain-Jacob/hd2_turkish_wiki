@@ -9,7 +9,7 @@ import { Item } from "./weaponTypes";
 const PRIORITY_TAGS = [
   "Primary",
   "Secondary",
-  // thorwable sonra eklenecek
+  "Throwable",
   "Heavy",
   "Medium",
   "Light",
