@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import WeaponGrid from "../components/WeaponGrid";
+import EnemyList from "../components/EnemyList";
 import { CATEGORIES, listDocsFull, type Category } from "@/lib/content";
 
 function isCategory(x: string): x is Category {
@@ -29,6 +30,19 @@ export default async function CategoryPage({
     );
   }
 
+  if (category === "enemies") {
+    return (
+      <div style={{ padding: 18 }}>
+        <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12 }}>
+          {CATEGORIES.find((c) => c.key === category)?.label ?? category}
+        </h1>
+
+        <EnemyList items={items} />
+      </div>
+    );
+  }
+
+  // fallback for other categories (stratagems/builds etc.)
   return (
     <div style={{ padding: 18 }}>
       <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12 }}>
@@ -52,7 +66,7 @@ export default async function CategoryPage({
             <div
               style={{
                 width: "100%",
-                aspectRatio: "16/9",
+                aspectRatio: it.category === "enemies" ? "1/1" : "16/9",
                 borderRadius: 14,
                 overflow: "hidden",
                 background: "rgba(255,255,255,.04)",
@@ -67,7 +81,13 @@ export default async function CategoryPage({
                   alt={it.title}
                   loading="lazy"
                   referrerPolicy="no-referrer"
-                  style={{ width: "100%", height: "100%", objectFit: "contain", padding: 10 }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    maxHeight: 120,
+                    padding: it.category === "enemies" ? 4 : 10,
+                  }}
                 />
               ) : (
                 <div style={{ color: "var(--muted)", fontSize: 13 }}>No image</div>
