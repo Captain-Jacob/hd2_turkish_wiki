@@ -6,7 +6,6 @@ tags:
   - Secondary
   - Medium
   - One Handed
-  - High Damage
 
 stats:
   damage: 300

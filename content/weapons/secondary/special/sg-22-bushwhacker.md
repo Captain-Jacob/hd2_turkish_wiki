@@ -6,7 +6,6 @@ tags:
   - Secondary
   - Shotgun
   - Light
-  - Multi Barrel
 
 stats:
   damage: 405

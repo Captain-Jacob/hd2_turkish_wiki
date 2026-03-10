@@ -5,7 +5,6 @@ tags:
   - Pistol
   - Secondary
   - Medium
-  - High Damage
   - Semi-Auto
 
 stats:

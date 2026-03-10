@@ -6,7 +6,6 @@ tags:
   - Secondary
   - Support
   - One Handed
-  - Stim
 
 stats:
   damage: 0

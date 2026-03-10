@@ -7,7 +7,6 @@ tags:
   - Light
   - Semi-Auto
   - Suppressed
-  - Halo Crossover
 
 stats:
   damage: 125

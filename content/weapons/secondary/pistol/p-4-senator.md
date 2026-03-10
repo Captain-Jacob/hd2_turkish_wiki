@@ -5,9 +5,7 @@ tags:
   - Pistol
   - Secondary
   - Heavy
-  - Revolver
-  - High Damage
-
+  
 stats:
   damage: 225
   fire_rate: 200

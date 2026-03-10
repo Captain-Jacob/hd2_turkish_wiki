@@ -6,7 +6,6 @@ tags:
   - Secondary
   - Medium
   - One Handed
-  - Saber
 
 stats:
   damage: 188

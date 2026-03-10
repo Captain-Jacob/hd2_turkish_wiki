@@ -6,7 +6,6 @@ tags:
   - Secondary
   - Light
   - Semi-Auto
-  - Starter
 
 stats:
   damage: 100
