@@ -6,7 +6,6 @@ tags:
   - Secondary
   - Energy
   - Beam
-  - Fire
   - Heat
   - One Handed
   - Light

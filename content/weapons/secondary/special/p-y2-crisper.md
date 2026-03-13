@@ -4,7 +4,6 @@ summary: "Tek elle kullanılabilen kompakt alev makinesi. Kısa menzilde yoğun 
 tags:
   - Special
   - Secondary
-  - Fire
   - Heavy
   - Incendiary
   - One Handed

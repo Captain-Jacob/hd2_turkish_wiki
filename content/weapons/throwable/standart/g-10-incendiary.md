@@ -4,7 +4,6 @@ summary: "Patlama sonrası çevreyi ateşe veren yangın bombası. Düşmanları
 tags:
   - Throwable
   - Incendiary
-  - Fire
   - Medium
   
 stats:

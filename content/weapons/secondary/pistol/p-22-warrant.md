@@ -6,7 +6,6 @@ tags:
   - Secondary
   - Medium
   - Guided
-  - Burst
 
 stats:
   damage: 80
