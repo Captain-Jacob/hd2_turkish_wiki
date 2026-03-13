@@ -3,7 +3,7 @@ title: "Brawler"
 summary: "Light Automaton unit armed with twin heated blades that specializes in close quarters combat."
 tags: ["automaton","light","low-threat","melee"]
 updated: "2026-03-10"
-image: "https://helldivers.wiki.gg/images/thumb/Brawler_Enemy_Icon.png/120px-Brawler_Enemy_Icon.png"
+image: "https://helldivers.wiki.gg/images/thumb/Brawler_Enemy_Icon.png/1024px-Brawler_Enemy_Icon.png"
 ---
 
 ## Tehdit

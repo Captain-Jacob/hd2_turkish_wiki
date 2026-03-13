@@ -3,7 +3,7 @@ title: "Marauder"
 summary: "The Marauder is a light Automaton equipped with a Fusion SMG, and is a lightly armored variant of the Trooper."
 tags: ["automaton","light","low-threat","smg"]
 updated: "2026-03-10"
-image: "https://helldivers.wiki.gg/images/thumb/Marauder_Enemy_Icon.png/120px-Marauder_Enemy_Icon.png"
+image: "https://helldivers.wiki.gg/images/thumb/Marauder_Enemy_Icon.png/1024px-Marauder_Enemy_Icon.png"
 ---
 
 ## Tehdit
